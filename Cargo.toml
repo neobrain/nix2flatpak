@@ -1,0 +1,29 @@
+[package]
+name = "nix2flatpak"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+goblin = { version = "0.9", default-features = false, features = ["elf32", "elf64", "endian_fd"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive"] }
+regex = "1"
+walkdir = "2"
+anyhow = "1"
+
+[profile.release]
+lto = true
+strip = true
+
+[[bin]]
+name = "nix2flatpak-analyze-closure"
+path = "src/bin/analyze_closure.rs"
+
+[[bin]]
+name = "nix2flatpak-index-runtime"
+path = "src/bin/index_runtime.rs"
+
+[[bin]]
+name = "nix2flatpak-rewrite-for-flatpak"
+path = "src/bin/rewrite_for_flatpak.rs"
