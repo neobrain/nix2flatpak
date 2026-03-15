@@ -11,10 +11,23 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        # pkgs with insecure olm allowed (needed for neochat)
+        # pkgs with insecure olm allowed and lighter deps (needed for neochat)
         pkgsWithOlm = import nixpkgs {
           inherit system;
           config.permittedInsecurePackages = [ "olm-3.2.16" ];
+          overlays = [
+            (final: prev: {
+              kdePackages = prev.kdePackages.overrideScope (kfinal: kprev: {
+                # Build kquickimageeditor without opencv (~44 MB with openblas).
+                # OpenCV is optional; the official KDE Flatpak builds without it.
+                kquickimageeditor = kprev.kquickimageeditor.overrideAttrs (old: {
+                  buildInputs = builtins.filter
+                    (dep: !(dep ? pname && dep.pname == "opencv"))
+                    old.buildInputs;
+                });
+              });
+            })
+          ];
         };
 
         # Python with dependencies for our scripts
@@ -82,7 +95,11 @@
           # NeoChat (KDE Matrix client) as a Flatpak
           neochat-flatpak = mkFlatpak {
             appId = "org.kde.neochat";
-            package = pkgsWithOlm.kdePackages.neochat;
+            package = pkgsWithOlm.kdePackages.neochat.override {
+              # QtWebView is optional and pulls in QtWebEngine (~375 MB of Chromium).
+              # The official KDE Flatpak builds without it too.
+              qtwebview = null;
+            };
             runtime = "org.kde.Platform//6.10";
             runtimeIndex = ./runtimes/org.kde.Platform/6.10/runtime-index.json;
             permissions = {
