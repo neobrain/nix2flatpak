@@ -31,6 +31,12 @@ flatpak install --user $(nix build .#neochat-flatpak --no-link --print-out-paths
 flatpak install --user $(nix build .#signal-desktop-flatpak --no-link --print-out-paths)/*.flatpak
 ```
 
+## Processing (Java creative coding IDE)
+
+```sh
+flatpak install --user $(nix build .#processing-flatpak --no-link --print-out-paths)/*.flatpak
+```
+
 ## Dolphin (emulator)
 
 ```sh

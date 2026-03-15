@@ -101,6 +101,25 @@
             skipAbiChecks = true;
           };
 
+          # Processing (Java creative coding IDE)
+          processing-flatpak = mkFlatpak {
+            appId = "org.processing.Processing";
+            appName = "Processing IDE";
+            developer = "Processing Foundation";
+            package = pkgs.processing;
+            runtime = "org.gnome.Platform//49";
+            runtimeIndex = ../runtimes/org.gnome.Platform/49/runtime-index.json;
+            command = "Processing";
+            icon = "${pkgs.processing}/lib/app/resources/lib/icons/app-256.png";
+            permissions = {
+              share = [ "network" "ipc" ];  # network for library downloads
+              sockets = [ "x11" "wayland" ];
+              devices = [ "dri" ];
+              filesystems = [ "home" ];  # sketches stored in ~/sketchbook
+            };
+            skipAbiChecks = true;
+          };
+
           # Dolphin
           dolphin-emu-flatpak = mkFlatpak {
             appId = "org.DolphinEmu.dolphin-emu";

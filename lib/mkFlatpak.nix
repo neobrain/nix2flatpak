@@ -121,9 +121,23 @@ in stdenv.mkDerivation {
     # Copy icons (only PNG — SVG validation requires gdk-pixbuf SVG loader
     # which is unavailable in the nix build sandbox)
     ${if icon != null then ''
-      # TODO: detect icon size and format
-      mkdir -p flatpak-build/export/share/icons/hicolor/scalable/apps
-      cp ${icon} flatpak-build/export/share/icons/hicolor/scalable/apps/${appId}.svg
+      iconFile="${icon}"
+      case "$iconFile" in
+        *.svg)
+          mkdir -p flatpak-build/export/share/icons/hicolor/scalable/apps
+          cp "$iconFile" flatpak-build/export/share/icons/hicolor/scalable/apps/${appId}.svg
+          ;;
+        *.png)
+          # Detect PNG dimensions for proper hicolor directory
+          iconSize=$(file "$iconFile" | grep -oP '\d+ x \d+' | head -1 | cut -d' ' -f1)
+          iconSize=''${iconSize:-256}
+          mkdir -p "flatpak-build/export/share/icons/hicolor/''${iconSize}x''${iconSize}/apps"
+          cp "$iconFile" "flatpak-build/export/share/icons/hicolor/''${iconSize}x''${iconSize}/apps/${appId}.png"
+          ;;
+        *)
+          echo "WARNING: Unknown icon format: $iconFile"
+          ;;
+      esac
     '' else ''
       if [ -d "${package}/share/icons" ]; then
         find ${package}/share/icons -name "*.png" | while read -r pngfile; do
