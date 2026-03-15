@@ -25,6 +25,12 @@ flatpak install --user $(nix build .#kcalc-flatpak --no-link --print-out-paths)/
 flatpak install --user $(nix build .#neochat-flatpak --no-link --print-out-paths)/*.flatpak
 ```
 
+## Signal Desktop (Electron)
+
+```sh
+flatpak install --user $(nix build .#signal-desktop-flatpak --no-link --print-out-paths)/*.flatpak
+```
+
 ## Dolphin (emulator)
 
 ```sh

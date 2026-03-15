@@ -127,6 +127,10 @@ in stdenv.mkDerivation {
     '' else ''
       if [ -d "${package}/share/icons" ]; then
         find ${package}/share/icons -name "*.png" | while read -r pngfile; do
+          # Flatpak rejects icons larger than 512x512
+          if echo "$pngfile" | grep -qE '(1024x1024|2048x2048)'; then
+            continue
+          fi
           relpath="''${pngfile#${package}/share/icons/}"
           destdir="flatpak-build/export/share/icons/$(dirname "$relpath")"
           mkdir -p "$destdir"

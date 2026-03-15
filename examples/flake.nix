@@ -81,6 +81,26 @@
             skipAbiChecks = true;
           };
 
+          # Signal Desktop (Electron/GNOME runtime)
+          signal-desktop-flatpak = mkFlatpak {
+            appId = "org.signal.Signal";
+            package = pkgs.signal-desktop;
+            runtime = "org.gnome.Platform//49";
+            runtimeIndex = ../runtimes/org.gnome.Platform/49/runtime-index.json;
+            command = "signal-desktop";
+            extraEnv = {
+              ELECTRON_DISABLE_SANDBOX = "1";  # SUID sandbox doesn't work inside Flatpak
+            };
+            permissions = {
+              share = [ "network" "ipc" ];
+              sockets = [ "x11" "wayland" "pulseaudio" ];
+              devices = [ "all" ];  # camera, microphone
+              filesystems = [ "xdg-download" ];
+              talk-names = [ "org.freedesktop.Notifications" "org.freedesktop.secrets" ];
+            };
+            skipAbiChecks = true;
+          };
+
           # Dolphin
           dolphin-emu-flatpak = mkFlatpak {
             appId = "org.DolphinEmu.dolphin-emu";
