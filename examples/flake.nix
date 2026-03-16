@@ -36,7 +36,7 @@
       in {
         packages = {
           # GNOME Calculator (GNOME runtime)
-          gnome-calculator-flatpak = mkFlatpak {
+          gnome-calculator = mkFlatpak {
             appId = "org.gnome.Calculator";
             package = pkgs.gnome-calculator;
             runtime = "org.gnome.Platform//49";
@@ -49,7 +49,7 @@
           };
 
           # KCalc (KDE calculator)
-          kcalc-flatpak = mkFlatpak {
+          kcalc = mkFlatpak {
             appId = "org.kde.kcalc";
             package = pkgs.kdePackages.kcalc;
             runtime = "org.kde.Platform//6.10";
@@ -63,7 +63,7 @@
           };
 
           # NeoChat (KDE Matrix client)
-          neochat-flatpak = mkFlatpak {
+          neochat = mkFlatpak {
             appId = "org.kde.neochat";
             package = pkgsForNeochat.kdePackages.neochat.override {
               # QtWebView is optional and pulls in QtWebEngine (~375 MB of Chromium).
@@ -82,7 +82,7 @@
           };
 
           # Signal Desktop (Electron/GNOME runtime)
-          signal-desktop-flatpak = mkFlatpak {
+          signal-desktop = mkFlatpak {
             appId = "org.signal.Signal";
             package = pkgs.signal-desktop;
             runtime = "org.gnome.Platform//49";
@@ -104,7 +104,7 @@
           # Processing (Java creative coding IDE)
           # TODO: Investigate using extension runtimes (org.freedesktop.Sdk.Extension.openjdk17)
           #       to avoid bundling JDKs.
-          processing-flatpak = mkFlatpak {
+          processing = mkFlatpak {
             appId = "org.processing.Processing";
             appName = "Processing IDE";
             developer = "Processing Foundation";
@@ -130,7 +130,7 @@
           };
 
           # Dolphin
-          dolphin-emu-flatpak = mkFlatpak {
+          dolphin-emu = mkFlatpak {
             appId = "org.DolphinEmu.dolphin-emu";
             package = pkgs.dolphin-emu;
             runtime = "org.kde.Platform//6.10";
@@ -147,13 +147,13 @@
         };
 
         checks = {
-          kcalc-flatpak-structure = pkgs.callPackage ../tests/kcalc-flatpak.nix {
-            kcalc-flatpak = self.packages.${system}.kcalc-flatpak;
+          kcalc-structure = pkgs.callPackage ../tests/kcalc.nix {
+            kcalc = self.packages.${system}.kcalc;
             inherit (pkgs) patchelf file;
           };
 
-          gnome-calculator-flatpak-structure = pkgs.callPackage ../tests/gnome-calculator-flatpak.nix {
-            gnome-calculator-flatpak = self.packages.${system}.gnome-calculator-flatpak;
+          gnome-calculator-structure = pkgs.callPackage ../tests/gnome-calculator.nix {
+            gnome-calculator = self.packages.${system}.gnome-calculator;
             inherit (pkgs) patchelf file;
           };
         };

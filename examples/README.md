@@ -10,35 +10,35 @@ matching what official Flatpak maintainers do.
 ## GNOME Calculator
 
 ```sh
-flatpak install --user $(nix build .#gnome-calculator-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#gnome-calculator --no-link --print-out-paths)/*.flatpak
 ```
 
 ## KCalc (KDE calculator)
 
 ```sh
-flatpak install --user $(nix build .#kcalc-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#kcalc --no-link --print-out-paths)/*.flatpak
 ```
 
 ## NeoChat (KDE Matrix client)
 
 ```sh
-flatpak install --user $(nix build .#neochat-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#neochat --no-link --print-out-paths)/*.flatpak
 ```
 
 ## Signal Desktop (Electron)
 
 ```sh
-flatpak install --user $(nix build .#signal-desktop-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#signal-desktop --no-link --print-out-paths)/*.flatpak
 ```
 
 ## Processing (Java creative coding IDE)
 
 ```sh
-flatpak install --user $(nix build .#processing-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#processing --no-link --print-out-paths)/*.flatpak
 ```
 
 ## Dolphin (emulator)
 
 ```sh
-flatpak install --user $(nix build .#dolphin-emu-flatpak --no-link --print-out-paths)/*.flatpak
+flatpak install --user $(nix build .#dolphin-emu --no-link --print-out-paths)/*.flatpak
 ```

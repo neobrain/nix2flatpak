@@ -1,27 +1,27 @@
-{ runCommand, patchelf, file, gnome-calculator-flatpak }:
+{ runCommand, patchelf, file, kcalc }:
 
-runCommand "test-gnome-calculator-flatpak-structure" {
+runCommand "test-kcalc-structure" {
   nativeBuildInputs = [ patchelf file ];
 } ''
   set -euo pipefail
 
-  flatpak_dir="${gnome-calculator-flatpak}/flatpak-dir"
-  bundle="${gnome-calculator-flatpak}/org.gnome.Calculator.flatpak"
+  flatpak_dir="${kcalc}/flatpak-dir"
+  bundle="${kcalc}/org.kde.kcalc.flatpak"
 
   echo "=== Test 1: metadata file exists and has correct app ID ==="
-  grep -q "name=org.gnome.Calculator" "$flatpak_dir/metadata"
+  grep -q "name=org.kde.kcalc" "$flatpak_dir/metadata"
   echo "PASS"
 
-  echo "=== Test 2: metadata references org.gnome.Platform runtime ==="
-  grep -q "runtime=org.gnome.Platform/" "$flatpak_dir/metadata"
+  echo "=== Test 2: metadata references org.kde.Platform runtime ==="
+  grep -q "runtime=org.kde.Platform" "$flatpak_dir/metadata"
   echo "PASS"
 
-  echo "=== Test 3: metadata has command=gnome-calculator ==="
-  grep -q "command=gnome-calculator" "$flatpak_dir/metadata"
+  echo "=== Test 3: metadata has command=kcalc ==="
+  grep -q "command=kcalc" "$flatpak_dir/metadata"
   echo "PASS"
 
   echo "=== Test 4: app binary exists ==="
-  test -e "$flatpak_dir/files/bin/gnome-calculator"
+  test -e "$flatpak_dir/files/bin/kcalc"
   echo "PASS"
 
   echo "=== Test 5: .flatpak bundle exists and is non-empty ==="
