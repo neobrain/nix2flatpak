@@ -102,11 +102,20 @@
           };
 
           # Processing (Java creative coding IDE)
+          # TODO: Investigate using extension runtimes (org.freedesktop.Sdk.Extension.openjdk17)
+          #       to avoid bundling JDKs.
           processing-flatpak = mkFlatpak {
             appId = "org.processing.Processing";
             appName = "Processing IDE";
             developer = "Processing Foundation";
-            package = pkgs.processing;
+
+            # Override batik to use jdk17 instead of the default jre (jdk21).
+            # Processing runs on jdk17; batik's CLI wrappers reference jre,
+            # which pulls jdk21 (~400 MB) into the closure even though
+            # processing only uses the batik *library*.
+            package = pkgs.processing.override {
+              batik = pkgs.batik.override { jre = pkgs.jdk17; };
+            };
             runtime = "org.gnome.Platform//49";
             runtimeIndex = ../runtimes/org.gnome.Platform/49/runtime-index.json;
             command = "Processing";
