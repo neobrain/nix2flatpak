@@ -162,6 +162,35 @@ in stdenv.mkDerivation {
       fi
     ''}
 
+    # Copy D-Bus services
+    mkdir -p flatpak-build/export/share/dbus-1/services
+
+    if [ -d "${package}/share/dbus-1/services" ]; then
+      for svcFile in ${package}/share/dbus-1/services/*.service; do
+        if [ -f "$svcFile" ]; then
+          busName=$(grep -m1 '^Name=' "$svcFile" | cut -d= -f2-)
+
+          if [ -z "$busName" ]; then
+            echo "ERROR: D-Bus service file '$svcFile' has no Name= key"
+            exit 1
+          fi
+
+          origExec=$(grep -m1 '^Exec=' "$svcFile" | cut -d= -f2-)
+
+          if [ -z "$origExec" ]; then
+            echo "ERROR: D-Bus service file '$svcFile' has no Exec= key"
+            exit 1
+          fi
+
+          install -D -m 644 "$svcFile" "flatpak-build/files/share/dbus-1/services/$busName.service"
+
+          rewrittenExec=$(echo "$origExec" | sed -E 's|^(/nix/store/[^/]+/bin/)([^ ]+)|\2|')
+          sed "s|^Exec=.*|Exec=$rewrittenExec|" "$svcFile" \
+            > "flatpak-build/export/share/dbus-1/services/$busName.service"
+        fi
+      done
+    fi
+
     # Copy AppStream metadata (user-provided > package-provided > generated from nixpkgs meta)
     mkdir -p flatpak-build/export/share/metainfo
     metainfoFile="flatpak-build/export/share/metainfo/${appId}.metainfo.xml"
