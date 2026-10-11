@@ -2,7 +2,7 @@
 
 This tool lets you distribute Nix packages as Flatpak bundles/repositories, allowing users to easily install your software via `flatpak install` without requiring Nix on their end.
 
-Application binaries are automatically patched to use libraries from the official Flatpak runtimes (KDE/GNOME/…) to minimize application sizes, to enable security updates, and to ensure proper system integration.
+Application binaries are automatically patched to use libraries from the official Flatpak runtimes (KDE/GNOME/FDO/…) to minimize application sizes, to enable security updates, and to ensure proper system integration.
 Dependencies not present in the runtimes are bundled from the Nix store.
 
 ## Usage
@@ -13,7 +13,7 @@ Add nix2flatpak as a flake input and call `mkFlatpak`:
 packages.${system}.gnome-calculator = mkFlatpak {
   appId = "org.gnome.Calculator";
   package = pkgs.gnome-calculator;
-  runtime = "org.gnome.Platform/49";
+  runtime = "org.gnome.Platform/51";
   permissions = {
     share = [ "ipc" ];
     sockets = [ "fallback-x11" "wayland" ];
@@ -37,7 +37,7 @@ See the [examples](./examples/) directory for complete examples covering GNOME, 
 | --------------- | -------- | ---------------------------------------------------------------------------------------- |
 | `appId`         | yes      | Flatpak application ID (e.g. `org.gnome.Calculator`)                                     |
 | `package`       | yes      | Nix derivation to convert                                                                |
-| `runtime`       | yes      | Target runtime (e.g. `"org.gnome.Platform/49"`, `"org.kde.Platform/6.10"`)               |
+| `runtime`       | yes      | Target runtime (e.g. `"org.gnome.Platform/51"`, `"org.kde.Platform/6.11"`)               |
 | `runtimeIndex`  |          | Path to the runtime's `runtime-index.json` (default: inferred from runtime)              |
 | `command`       |          | Executable to launch (default: `meta.mainProgram` or package name)                       |
 | `sdk`           |          | SDK name (default: inferred from runtime)                                                |

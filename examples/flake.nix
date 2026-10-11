@@ -39,7 +39,7 @@
           gnome-calculator = mkFlatpak {
             appId = "org.gnome.Calculator";
             package = pkgs.gnome-calculator;
-            runtime = "org.gnome.Platform/49";
+            runtime = "org.gnome.Platform/51";
 
             permissions = {
               share = [ "ipc" ];
@@ -52,7 +52,7 @@
           kcalc = mkFlatpak {
             appId = "org.kde.kcalc";
             package = pkgs.kdePackages.kcalc;
-            runtime = "org.kde.Platform/6.10";
+            runtime = "org.kde.Platform/6.11";
 
             permissions = {
               share = [ "ipc" ];
@@ -70,7 +70,7 @@
               # The official KDE Flatpak builds without it too.
               qtwebview = null;
             };
-            runtime = "org.kde.Platform/6.10";
+            runtime = "org.kde.Platform/6.11";
 
             permissions = {
               share = [ "network" "ipc" ];
@@ -85,7 +85,7 @@
           signal-desktop = mkFlatpak {
             appId = "org.signal.Signal";
             package = pkgs.signal-desktop;
-            runtime = "org.gnome.Platform/49";
+            runtime = "org.gnome.Platform/51";
 
             command = "signal-desktop";
             extraEnv = {
@@ -116,7 +116,7 @@
             package = pkgs.processing.override {
               batik = pkgs.batik.override { jre = pkgs.jdk17; };
             };
-            runtime = "org.gnome.Platform/49";
+            runtime = "org.gnome.Platform/51";
 
             command = "Processing";
             icon = "${pkgs.processing}/lib/app/resources/lib/icons/app-256.png";
@@ -133,7 +133,7 @@
           dolphin-emu = mkFlatpak {
             appId = "org.DolphinEmu.dolphin-emu";
             package = pkgs.dolphin-emu;
-            runtime = "org.kde.Platform/6.10";
+            runtime = "org.kde.Platform/6.11";
 
             command = "dolphin-emu";
             permissions = {
